@@ -1,0 +1,16 @@
+
+/* tabla roles */
+create table role (
+id smallint not null,
+rolename varchar(100),
+PRIMARY KEY (id));
+
+
+insert into role (id, rolename) values
+(1, 'Paciente');
+
+insert into role (id, rolename) values
+(2, 'Sanitario');
+
+insert into role (id, rolename) values
+(3, 'Administrador');

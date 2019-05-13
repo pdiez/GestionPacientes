@@ -1,0 +1,9 @@
+/* tabla sensores */
+create table sensor (
+id mediumint not null AUTO_INCREMENT,
+user_id mediumint,
+sensortype_id smallint,
+alertvalue mediumint,
+active smallint,
+PRIMARY KEY (id));
+

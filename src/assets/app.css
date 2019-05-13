@@ -1,0 +1,46 @@
+.divisor .split-pane-divider {
+    -fx-padding: 0 1 0 1 ;
+    -fx-background-color: black ;
+    -fx-background-insets: 0;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+}
+
+
+.divisor-interno .split-pane-divider {
+    -fx-padding: 0 1 0 1 ;
+    -fx-background-color: grey ;
+    -fx-background-insets: 0;
+}
+
+
+.menu {
+	-fx-background-color: slategray  ;
+	
+}
+
+
+.menubutton {
+	-fx-background-color: slategray;
+	-fx-text-fill: azure;
+	-fx-content-display: top;
+}
+
+.menubutton-selected {
+	-fx-background-color: black;
+	-fx-text-fill: white;
+	-fx-content-display: top;
+}
+
+.text-input {
+  -fx-background-color: linear-gradient(from 0px 0px to 0px 5px, derive(-fx-control-inner-background, -9%), -fx-control-inner-background);
+  -fx-background-insets: 0, 1;
+  -fx-background-radius: 3, 2;
+}
+
+.combo-box {
+  -fx-background-color: linear-gradient(from 0px 0px to 0px 5px, derive(-fx-control-inner-background, -9%), -fx-control-inner-background);
+  -fx-background-insets: 0, 1;
+  -fx-background-radius: 3, 2;
+}
+
+

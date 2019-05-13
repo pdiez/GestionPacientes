@@ -1,0 +1,10 @@
+
+/* tabla tipos de sensores */
+create table sensortype (
+id smallint not null,
+type varchar(50),
+PRIMARY KEY (id));
+
+
+insert into sensortype (id, type) values 
+(1, 'Temperatura'), (2, 'Movimiento'), (3, 'Humedad'), (4, 'Humo');

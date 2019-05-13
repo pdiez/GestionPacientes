@@ -1,0 +1,9 @@
+
+/* tabla mensajes */
+create table message (
+id integer not null auto_increment,
+from_id mediumint,
+to_id mediumint,
+date datetime,
+message text,
+PRIMARY KEY (id));

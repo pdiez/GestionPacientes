@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="537.0" prefWidth="835.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <SplitPane fx:id="mainSplit" dividerPositions="0.15" layoutX="386.0" layoutY="162.0" prefHeight="160.0" prefWidth="200.0" styleClass="divisor" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <items>
+          <AnchorPane maxWidth="110.0" minHeight="0.0" minWidth="110.0" prefHeight="160.0" prefWidth="110.0">
+               <children>
+                  <VBox fx:id="vboxMenu" alignment="CENTER" layoutX="-9.0" layoutY="97.0" prefHeight="171.0" prefWidth="100.0" spacing="20.0" styleClass="menu" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <JFXButton fx:id="btnAlertas" alignment="CENTER" maxWidth="1.7976931348623157E308" onAction="#handlebtnAlertasAction" ripplerFill="#ebe4e4" text="Alertas" />
+                        <JFXButton fx:id="btnMensajes" maxWidth="1.7976931348623157E308" onAction="#handlebtnMensajesAction" ripplerFill="#ebe4e4" text="Mensajes" />
+                        <JFXButton fx:id="btnHistorial" maxWidth="1.7976931348623157E308" onAction="#handlebtnHistorialAction" ripplerFill="#ebe4e4" text="Historial" />
+                        <JFXButton fx:id="btnSensores" maxWidth="1.7976931348623157E308" onAction="#handlebtnSensoresAction" ripplerFill="#ebe4e4" text="Sensores" />
+                        <JFXButton fx:id="btnPerfil" alignment="CENTER" maxWidth="1.7976931348623157E308" onAction="#handlebtnPerfilAction" ripplerFill="#ebe4e4" text="Perfil" />
+                        <JFXButton fx:id="btnAdmin" maxWidth="1.7976931348623157E308" onAction="#handlebtnAdminAction" ripplerFill="#ebe4e4" text="Usuarios" />
+                     </children></VBox>
+               </children></AnchorPane>
+          <AnchorPane fx:id="contentPane" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" SplitPane.resizableWithParent="false">
+               <children>
+                  <Label fx:id="lblWelcome" alignment="CENTER" layoutX="182.0" layoutY="110.0" opacity="0.5" prefHeight="43.0" prefWidth="370.0" text="Label" textAlignment="CENTER" AnchorPane.bottomAnchor="382.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="110.0">
+                     <font>
+                        <Font name="Arial" size="15.0" />
+                     </font>
+                  </Label>
+               </children></AnchorPane>
+        </items>
+         <cursor>
+            <Cursor fx:constant="DEFAULT" />
+         </cursor>
+      </SplitPane>
+   </children>
+</AnchorPane>
