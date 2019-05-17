@@ -1,15 +1,1 @@
-
-/* tabla usuarios */
-create table user (
-id mediumint not null AUTO_INCREMENT,
-user varchar(25),
-password varchar(25),
-name varchar(100),
-role_id smallint,
-phone varchar(30),
-notes text,
-PRIMARY KEY (id));
-
-
-insert into user (user, password, name, role_id, phone, notes) values
-('admin', '123', 'Administrador', 3, '5555555', 'Usuario Administrador');	
+4
