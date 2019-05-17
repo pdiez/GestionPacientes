@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<users>
+    <user>
+        <username>admin</username>
+        <password>123</password>
+        <role>3</role>
+        <name>Administrador</name>
+        <phone>1231231 23</phone>
+        <notes>Usuario administrador</notes>
+    </user>
+    <user>
+        <username>asd</username>
+        <password>asd</password>
+        <role>1</role>
+        <name>asd</name>
+        <phone>asd</phone>
+        <notes>asdaa</notes>
+    </user>
+    <user>
+        <username>snt1</username>
+        <password>aaa</password>
+        <role>2</role>
+        <name>Sanitario Test 1</name>
+        <phone>341234134</phone>
+        <notes>Prueba de perfil sanitario 1</notes>
+    </user>
+    <user>
+        <username>pct1</username>
+        <password>aaa</password>
+        <role>1</role>
+        <name>Paciente 1</name>
+        <phone>43232134</phone>
+        <notes>Prueba paciente 1</notes>
+    </user>
+    <user>
+        <username>pct2</username>
+        <password>aaa</password>
+        <role>1</role>
+        <name>Paciente 2</name>
+        <phone>45657256</phone>
+        <notes>Prueba paciente 2</notes>
+    </user>
+    <user>
+        <username>snt2</username>
+        <password>aaa</password>
+        <role>2</role>
+        <name>Sanitario Test 2</name>
+        <phone>3451341</phone>
+        <notes>Sanitario nº 2</notes>
+    </user>
+    <user>
+        <username>snt3</username>
+        <password>aaa</password>
+        <role>2</role>
+        <name>Sanitario Test 3</name>
+        <phone>567275</phone>
+        <notes>Sanitario nº 3</notes>
+    </user>
+</users>

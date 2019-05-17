@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<chat>
+    <message>
+        <from>admin</from>
+        <to>asd</to>
+        <date>0</date>
+        <text>mensaje de prueba</text>
+    </message>
+    <message>
+        <from>admin</from>
+        <to>asd</to>
+        <date>0</date>
+        <text>prueba2</text>
+    </message>
+    <message>
+        <from>admin</from>
+        <to>asd</to>
+        <date>0</date>
+        <text>probando actualzación</text>
+    </message>
+    <message>
+        <from>admin</from>
+        <to>asd</to>
+        <date>0</date>
+        <text>mmm</text>
+    </message>
+    <message>
+        <from>admin</from>
+        <to>asd</to>
+        <date>0</date>
+        <text></text>
+    </message>
+    <message>
+        <from>asd</from>
+        <to>admin</to>
+        <date>0</date>
+        <text>otro usuario</text>
+    </message>
+</chat>
