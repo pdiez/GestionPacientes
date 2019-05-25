@@ -10,13 +10,18 @@ public class BBDD {
 		Class.forName("com.mysql.cj.jdbc.Driver");  
 		String tz = TimeZone.getDefault().getID();
 		Connection con=DriverManager.getConnection(  
-		"jdbc:mysql://localhost:3306/gestionpacientes?serverTimezone="+tz+"","root","qwerty");  
+		"jdbc:mysql://localhost:3306/gestionpacientes","root","secreto");  
 		Statement stmt=con.createStatement();  
 		ResultSet rs=stmt.executeQuery("select * from user");  
 		while(rs.next())  
 		System.out.println(rs.getInt(1)+"  "+rs.getString(2)+"  "+rs.getString(3));  
 		con.close();  
-		}catch(Exception e){ System.out.println(e);}  
+		} catch (ClassNotFoundException e) {
+		    System.out.println("Where is your MySQL JDBC Driver?");
+		    e.printStackTrace();
+		    return;
+		}
+		catch(Exception e){ System.out.println(e);}  
 	}  
 
 }
