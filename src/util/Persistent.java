@@ -1,240 +1,302 @@
 package util;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import javax.sql.rowset.CachedRowSet;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
+import com.sun.rowset.CachedRowSetImpl;
 
-import application.Main;
 import model.Message;
-import model.Messages;
 import model.Role;
-import model.Roles;
-import model.Sensor;
-import model.Sensors;
 import model.User;
-import model.Users;
 
 public class Persistent {
 	
-	private static final String USERDB = "users.xml";
-	private static final String ROLEDB = "roles.xml";
-	private static final String SENSORDB = "sensors.xml";
-	private static final String CHATDB = "messages.xml";
+	private static final String constring = "jdbc:mysql://localhost:3306/gestionpacientes";
+	private static final String dbuser = "root";
+	private static final String dbpass = "secreto";
 	
-	
-	//
-	
-	public static Users getUsers () {
-		
-		Users u = new Users();
-		
-		try {
-            JAXBContext jaxbContext = JAXBContext.newInstance(Users.class);
-
-            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-            u = (Users) jaxbUnmarshaller.unmarshal(new File(USERDB));
-
-            Marshaller marshaller = jaxbContext.createMarshaller();
-            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-            
-
-        } catch (JAXBException e) {
-            e.printStackTrace();
-        }
-		
-		return u;
-		
+	private static ResultSet Query(String q) {
+		ResultSet rs = null;
+		CachedRowSet crs = null;
+		try{  
+			Class.forName("com.mysql.cj.jdbc.Driver");  
+			Connection con=DriverManager.getConnection(constring, dbuser, dbpass);  
+			Statement stmt=con.createStatement();  
+			rs=stmt.executeQuery(q); 
+			crs = new CachedRowSetImpl();
+			crs.populate(rs);
+			con.close();  
+		} catch (ClassNotFoundException e) {
+		    System.out.println("JDBC no encontrado");
+		    e.printStackTrace();
+		}
+			catch(Exception e){ System.out.println(e);
+		}  
+		return crs;
 	}
 	
-	public static Roles getRoles () {
-		Roles r = new Roles();
-		
+	private static void Execute(String q) {
+		try{  
+			Class.forName("com.mysql.cj.jdbc.Driver");  
+			Connection con=DriverManager.getConnection(constring, dbuser, dbpass);  
+			Statement stmt=con.createStatement();  
+			stmt.executeUpdate(q); 
+			con.close();  
+		} catch (ClassNotFoundException e) {
+		    System.out.println("JDBC no encontrado");
+		    e.printStackTrace();
+		}
+			catch(Exception e){ System.out.println(e);
+		}  
+	}
+	
+	public static User getUserById (int i) {
+		User u = new User();
+		String q = "SELECT id,user,password,name, role_id, phone, notes FROM USER WHERE id = " + i +";";
+		ResultSet rs = Query(q);
+		if (rs!=null) {
+			try {
+				while(rs.next()) {
+					u.setId(rs.getInt(1));
+					u.setUsername(rs.getString(2));
+					u.setPassword(rs.getString(3));
+					u.setName(rs.getString(4));
+					u.setRole(rs.getInt(5));
+					u.setPhone(rs.getString(6));
+					u.setNotes(rs.getString(7));
+					
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return u;
+	}
+	
+	public static User getUserByUsername (String user) {
+		User u = new User();
+		String q = "SELECT id,user,password,name, role_id, phone, notes FROM USER WHERE user = '" + user +"';";
+		ResultSet rs = Query(q);
 		try {
-            JAXBContext jaxbContext = JAXBContext.newInstance(Roles.class);
-
-            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-            r = (Roles) jaxbUnmarshaller.unmarshal(new File(ROLEDB));
-
-            Marshaller marshaller = jaxbContext.createMarshaller();
-            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-            
-
-        } catch (JAXBException e) {
-            e.printStackTrace();
-        }
+			while(rs.next()) {
+				u.setId(rs.getInt(1));
+				u.setUsername(rs.getString(2));
+				u.setPassword(rs.getString(3));
+				u.setName(rs.getString(4));
+				u.setRole(rs.getInt(5));
+				u.setPhone(rs.getString(6));
+				u.setNotes(rs.getString(7));
+				
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return u;
+	}
+	
+	public static User getUserByRoleId (int i) {
+		User u = new User();
+		String q = "SELECT id,user,password,name, role_id, phone, notes FROM USER WHERE role_id = " + i +";";
+		ResultSet rs = Query(q);
+		try {
+			while(rs.next()) {
+				u.setId(rs.getInt(1));
+				u.setUsername(rs.getString(2));
+				u.setPassword(rs.getString(3));
+				u.setName(rs.getString(4));
+				u.setRole(rs.getInt(5));
+				u.setPhone(rs.getString(6));
+				u.setNotes(rs.getString(7));
+				
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return u;
+	}
+	
+	
+	public static ArrayList<User> getUserList() {
+		ArrayList<User> ul = new ArrayList<User>();
+		String q = "SELECT id,user,password,name, role_id, phone, notes FROM USER;";
+		ResultSet rs = Query(q);
+		try {
+			while(rs.next()) {
+				User u = new User();
+				u.setId(rs.getInt(1));
+				u.setUsername(rs.getString(2));
+				u.setPassword(rs.getString(3));
+				u.setName(rs.getString(4));
+				u.setRole(rs.getInt(5));
+				u.setPhone(rs.getString(6));
+				u.setNotes(rs.getString(7));
+				ul.add(u);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
+		return ul;
+	}
+	
+	
+	
+	public static boolean validateCredentials (String u, String p) {
+		ResultSet rs = null;
+		boolean res = false;
+		try{  
+			Class.forName("com.mysql.cj.jdbc.Driver");  
+			Connection con=DriverManager.getConnection(constring, dbuser, dbpass);  
+			String q = "SELECT 1 FROM USER WHERE user=? and password=?;";
+			PreparedStatement stmt=con.prepareStatement(q);  
+			stmt.setString(1, u);
+			stmt.setString(2, p);
+			rs=stmt.executeQuery(); 
+			while(rs.next()) {
+				res = true;
+				System.out.println(rs.getInt(1));
+			}
+			con.close();  
+		} catch (ClassNotFoundException e) {
+		    System.out.println("JDBC no encontrado");
+		    e.printStackTrace();
+		}
+			catch(Exception e){ System.out.println(e);
+		}  
+		
+		return res;
+	}
+	
+	public static void saveUser(User u) {
+		
+		String q = null;
+		
+		if (u.getId()==0) {
+		
+			q = "INSERT INTO USER (user,password,name, role_id, phone, notes) VALUES ("
+					+ "'" + u.getUsername() + "', '" + u.getPassword() + "', '" + u.getName() +"', " + u.getRole() 
+					+ ",'" + u.getPhone() + "', '" + u.getNotes() + "');";
+		} else {
+			q = "UPDATE USER SET user = '" + u.getUsername() + "'"
+						+ ", password = '" + u.getPassword() + "'"
+						+ ", name = '" + u.getName() + "'"
+						+ ", role_id = " + u.getRole()
+						+ ", phone = '" + u.getPhone() + "'"
+						+ ", notes = '" + u.getNotes() + "'"
+						+ " WHERE id = " + u.getId() + ";";
+		}
+		
+		Execute(q);
+	}
+	
+	public static void delUser (User u) {
+		String q = "DELETE FROM USER WHERE id = "+ u.getId() + ";";
+		Execute(q);
+	}
+	
+	public static ArrayList<Message> getMessagesByUser(User u) {
+		ArrayList<Message> msgs = new ArrayList<Message>();
+		
+		String q = "select u.id, u2.id, m.date, m.message from message m, user u, user u2 "
+				+ "where m.from_id = u.id and m.to_id = u2.id and (m.from_id = "+ u.getId() +"  or m.to_id = "+ u.getId() + ");";
+		
+		ResultSet rs = Query(q);
+		try {
+			while(rs.next()) {
+				Message m = new Message();
+				m.setFrom(rs.getInt(1));
+				m.setTo(rs.getInt(2));
+				m.setDate(rs.getDate(3));
+				m.setText(rs.getString(4));
+				msgs.add(m);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return msgs;
+	}
+	
+	public static ArrayList<Message> getMessagesBetween(User a, User b) {
+		ArrayList<Message> msgs = new ArrayList<Message>();
+		
+		String q = "select u.id, u2.id, m.date, m.message from message m, user u, user u2 "
+				+ "where m.from_id = u.id and m.to_id = u2.id " 
+				+ "and (m.from_id = "+ a.getId() +"  or m.to_id = "+ a.getId() + ") "
+				+ "and (m.from_id = "+ b.getId() +"  or m.to_id = "+ b.getId() + ");";
+		
+		ResultSet rs = Query(q);
+		try {
+			while(rs.next()) {
+				Message m = new Message();
+				m.setFrom(rs.getInt(1));
+				m.setTo(rs.getInt(2));
+				m.setDate(rs.getDate(3));
+				m.setText(rs.getString(4));
+				msgs.add(m);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return msgs;
+	}
+	
+	
+	public static void saveMessage(Message m) {
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		String dateformat = dateFormat.format(m.getDate());
+		
+		String q = "INSERT INTO MESSAGE (FROM_ID, TO_ID, DATE, MESSAGE) VALUES ("
+				+ m.getFrom() + ", " + m.getTo() + ", '" + dateformat +"', '" + m.getText() + "');";
+		
+		Execute(q);
+	}
+	
+	public static Role getRoleById(int i) {
+		Role r = new Role();
+		String q  = "SELECT id,rolename FROM ROLE WHERE id = " + i +";";
+		ResultSet rs = Query(q);
+		try {
+			while(rs.next()) {
+				r.setId(rs.getInt(1));
+				r.setRoleName(rs.getString(2));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return r;
 	}
 	
-	
-	public static Sensors getSensors () {
-		Sensors s = new Sensors();
-		
+	public static ArrayList<Role> getRoleList() {
+		ArrayList<Role> rl = new ArrayList<Role>();
+		String q  = "SELECT id,rolename FROM ROLE;";
+		ResultSet rs = Query(q);
 		try {
-            JAXBContext jaxbContext = JAXBContext.newInstance(Sensors.class);
-
-            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-            s = (Sensors) jaxbUnmarshaller.unmarshal(new File(SENSORDB));
-
-            Marshaller marshaller = jaxbContext.createMarshaller();
-            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-            
-
-        } catch (JAXBException e) {
-            e.printStackTrace();
-        }
-		
-		return s;
-	}
-	
-	
-	public static Messages getMessages() {
-		Messages m = new Messages();
-		
-		try {
-            JAXBContext jaxbContext = JAXBContext.newInstance(Messages.class);
-
-            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-            m = (Messages) jaxbUnmarshaller.unmarshal(new File(CHATDB));
-
-            Marshaller marshaller = jaxbContext.createMarshaller();
-            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		return m;
-		
-	}
-	
-	public static User getUserById (String id) {
-		
-		Users u = getUsers();
-		User user = new User();
-		
-		for (User usr : u.getUserList()) {
-			if (usr.getUsername().equals(id)) {
-				user = usr;
+			while(rs.next()) {
+				Role r = new Role();
+				r.setId(rs.getInt(1));
+				r.setRoleName(rs.getString(2));
+				rl.add(r);
 			}
-			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		
-		return user;
-	}
-
-	
-	public static Sensor getSensorById (String id) {
-		
-		Sensors s = getSensors();
-		Sensor sensor = new Sensor();
-		
-		
-		for (Sensor sen : s.getSensorList()) {
-			if (sen.getId().equals(id)) {
-				sensor = sen;
-			}
-			
-		}
-		
-		return sensor;
+		return rl;
 	}
 	
-	
-	public static void saveUser(User user) {
-		Users us = Persistent.getUsers();
-		boolean add = true;
-		
-		for(User u : us.getUserList()) {
-			if (u.getUsername().equals(user.getUsername())) {
-				u.setName(user.getName());
-				u.setNotes(user.getNotes());
-				u.setPassword(user.getPassword());
-				u.setPhone(user.getPhone());
-				u.setRole(user.getRole());
-				add=false;
-			}
-		}
-		if (add) { us.getUserList().add(user); }
-		
-		try {
-			 	
-				JAXBContext jaxbContext = JAXBContext.newInstance(Users.class);
-				Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-				jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-				
-				jaxbMarshaller.marshal(us, new FileOutputStream(USERDB));
-
-			      } 
-		 catch (JAXBException e) {
-				e.printStackTrace();
-			      }
-		catch (FileNotFoundException ex) {
-			ex.printStackTrace();
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-			
-	}
-	
-	public static void delUser(User user) {
-		Users us = Persistent.getUsers();
-		User del = new User();
-		
-		for(User u : us.getUserList()) {
-			if (u.getUsername().equals(user.getUsername())) {
-				del = u;
-			}
-		}
-		us.getUserList().remove(del);
-		try {	
-				JAXBContext jaxbContext = JAXBContext.newInstance(Users.class);
-				Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-				jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-				
-				jaxbMarshaller.marshal(us, new FileOutputStream(USERDB));
-
-			      } 
-		 catch (JAXBException e) {
-				e.printStackTrace();
-			      }
-		catch (FileNotFoundException ex) {
-			ex.printStackTrace();
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-			
-	}
-	
-	public static void saveMessage(Message msg) {
-		Messages m = Persistent.getMessages();
-
-		m.getMessageList().add(msg); 
-		
-		try {
-			 	
-				JAXBContext jaxbContext = JAXBContext.newInstance(Messages.class);
-				Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-				jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-
-				jaxbMarshaller.marshal(m, new FileOutputStream(CHATDB));
-
-			      } 
-		 catch (JAXBException e) {
-				e.printStackTrace();
-			      }
-		catch (FileNotFoundException ex) {
-			ex.printStackTrace();
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-			
-	}
-
 }

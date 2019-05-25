@@ -2,6 +2,7 @@ package view;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXButton;
@@ -21,7 +22,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import model.Message;
-import model.Messages;
 import model.User;
 import util.Persistent;
 
@@ -56,7 +56,7 @@ public class MensajesController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		imgUsuarios.setImage(new Image(Main.class.getResourceAsStream("/assets/users.png")));
 		
-		for (User u : Persistent.getUsers().getUserList()) {
+		for (User u : Persistent.getUserList()) {
 			Label l = new Label(u.getName());
 			l.setAccessibleText(u.getUsername());
 			lstChatUsers.getItems().add(l);
@@ -81,14 +81,12 @@ public class MensajesController implements Initializable {
 	
 	private void actualizaChat() {
 		txtChat.clear();
-		User to = Persistent.getUserById(lstChatUsers.getSelectionModel().getSelectedItem().getAccessibleText());
-		
-		Messages m = Persistent.getMessages();
-		for (Message e : m.getMessageList()) {
-			if (e.getFrom().equals(to.getUsername()) && e.getTo().equals(this.user.getUsername())) {
-				addChat(">>De " + e.getFrom() + ":  " + e.getText());
-			} else if (e.getFrom().equals(this.user.getUsername()) && e.getTo().equals(to.getUsername())) {
-				addChat("<<Para " + e.getTo() + ":  " + e.getText());
+		User to = Persistent.getUserByUsername(lstChatUsers.getSelectionModel().getSelectedItem().getAccessibleText());
+		for (Message e : Persistent.getMessagesBetween(to, this.user)) {
+			if (e.getFrom()==to.getId() && e.getTo()==this.user.getId()) {
+				addChat("["+ e.getDate() +"] "+ to.getName() +" dijo: " + e.getText());
+			} else {
+				addChat("[" + e.getDate() + "] Dijiste: " + e.getText());
 			} 
 		}
 		
@@ -109,9 +107,10 @@ public class MensajesController implements Initializable {
 	private void addMensaje() {
 		Message m = new Message();
 		
-		m.setFrom(this.user.getUsername());
-		m.setDate("0");
-		m.setTo(lstChatUsers.getSelectionModel().getSelectedItem().getAccessibleText());
+		m.setFrom(this.user.getId());
+		m.setDate(new Date());
+		User to = Persistent.getUserByUsername(lstChatUsers.getSelectionModel().getSelectedItem().getAccessibleText());
+		m.setTo(to.getId());
 		m.setText(txtMessage.getText());
 		m.Guardar();
 		txtMessage.clear();

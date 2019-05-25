@@ -26,7 +26,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import model.User;
-import model.Users;
 import util.Persistent;
 
 public class LoginController implements Initializable {
@@ -70,9 +69,6 @@ public class LoginController implements Initializable {
 		txtPassword.setLabelFloat(true);
 		btnOk.setDisable(true);
 		
-		// test
-		//txtUser.setText("admin");
-		//txtPassword.setText("123");
 		btnOk.setDisable(false);
 		btnOk.setFocusTraversable(true);
 		//
@@ -133,23 +129,13 @@ public class LoginController implements Initializable {
 
 	private void doLogin() {
 		
-		Users u = new Users();
-		u = Persistent.getUsers();
-		User user = new User();
-		boolean go = false;
-		for (User usr : u.getUserList()) {
-			if (usr.getUsername().equals(txtUser.getText()) && usr.getPassword().equals(txtPassword.getText())) {
-				go = true;
-				user = usr;
-				
-			}
-		}
-		
+		boolean go = Persistent.validateCredentials(txtUser.getText(), txtPassword.getText());
 		
 		if(go) {
 			imgLogin.setImage(new Image(Main.class.getResourceAsStream("/assets/padlock3.png")));
 			lblLogin.setText("Ok!");
 			MainController mc = new MainController();
+			User user = Persistent.getUserByUsername(txtUser.getText());
 			mc.show(stage, user);
 			
 			

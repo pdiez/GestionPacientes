@@ -1,9 +1,5 @@
 package model;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-
-@XmlAccessorType(XmlAccessType.FIELD)
 public class Sensor {
 	
 	private String id;
@@ -12,9 +8,7 @@ public class Sensor {
 	private int alertValue;
 	private int maxValue;
 	private int minValue;
-	private String user;
-	
-
+	private int userId;
 
 	public String getId() {
 		return id;
@@ -64,21 +58,15 @@ public class Sensor {
 		this.minValue = minValue;
 	}
 
-	public String getUser() {
-		return user;
+	public int getUserId() {
+		return userId;
 	}
 
-	public void setUser(String user) {
-		this.user = user;
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 
 	public Sensor() {}
-	
-	public Sensor(String id, String sensorType) {
-		this.id = id;
-		this.sensorType = sensorType;
-	}
-	
 	
 	@Override	
 	public String toString() {

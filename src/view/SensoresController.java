@@ -13,7 +13,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.Sensor;
-import model.Sensors;
 import util.CSVUtil;
 import util.Persistent;
 
@@ -47,9 +46,9 @@ public class SensoresController implements Initializable {
         tblSensores.getColumns().addAll(c1, c2, c3, c4 ,c5);
         
         ObservableList<Sensor> data = FXCollections.observableArrayList();
-        Sensors sensores = Persistent.getSensors();
-        if(!sensores.getSensorList().isEmpty()) {
-			data.addAll(sensores.getSensorList());
+        ArrayList<Sensor> sensores = null; //Persistent.getSensors();
+        if(!sensores.isEmpty()) {
+			data.addAll(sensores);
 			for (Sensor s : data) {
 				String cv = CSVUtil.leerCSVbySensor(s.getId());
 				if (!cv.isEmpty()) s.setCurrentValue(Integer.parseInt(cv));

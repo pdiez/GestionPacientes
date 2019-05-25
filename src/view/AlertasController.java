@@ -44,7 +44,8 @@ public class AlertasController implements Initializable {
 	
 	private void pintaAlertas() {
 		lstAlertas.getItems().clear();
-		List<Sensor> sensores = Persistent.getSensors().getSensorList();
+		//List<Sensor> sensores = Persistent.getSensors().getSensorList();
+		List<Sensor> sensores = null;
 		for (Sensor s : sensores) {
 			String cv = CSVUtil.leerCSVbySensor(s.getId());
 			if (!cv.isEmpty()) s.setCurrentValue(Integer.parseInt(cv));
@@ -60,8 +61,8 @@ public class AlertasController implements Initializable {
 	            .glyph(FontAwesomeIcon.WARNING)
 	            .size("1em")
 	            .build();
-		if (s.getUser()!=null) {
-			User u = Persistent.getUserById(s.getUser());
+		if (s.getUserId()!=0) {
+			User u = Persistent.getUserById(s.getUserId());
 			
 			String t = "ATENCIÓN!! " + u.getName() + " Sensor: " + s.getId() + ". Valor " + s.getCurrentValue();
 			Label l = new Label(t, aIcon);

@@ -36,7 +36,7 @@ import util.Persistent;
 
 public class AdminController implements Initializable{
 	
-	ObservableList<Role> roles = FXCollections.observableArrayList(Persistent.getRoles().getRoleList());
+	ObservableList<Role> roles = FXCollections.observableArrayList(Persistent.getRoleList());
 	
 	@FXML
 	Label lblUsuarios;
@@ -97,7 +97,7 @@ public class AdminController implements Initializable{
 	private void cargaTablaUsuarios() {
 
 		ObservableList<User> data = FXCollections.observableArrayList();
-		data.addAll(Persistent.getUsers().getUserList());
+		data.addAll(Persistent.getUserList());
 				
 		TableColumn c1 = new TableColumn("Usuario");
         c1.setCellValueFactory(new PropertyValueFactory<User,String>("username"));
@@ -162,7 +162,7 @@ public class AdminController implements Initializable{
 	private void updateTablaUsuarios() {
 
 		ObservableList<User> data = FXCollections.observableArrayList();
-		data.addAll(Persistent.getUsers().getUserList());
+		data.addAll(Persistent.getUserList());
 		tblUsuarios.setItems(data);
 		
 	}

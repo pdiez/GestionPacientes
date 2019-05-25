@@ -1,35 +1,32 @@
 package model;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-
 import util.Persistent;
 
-@XmlRootElement(name="message")
-@XmlAccessorType(XmlAccessType.FIELD)
 public class Message {
 	
-	private String from;
-	private String to;
-	private String date;
+	
+	private int from;
+	private int to;
+	private java.util.Date date;
 	private String text;
-	public String getFrom() {
+	
+	
+	public int getFrom() {
 		return from;
 	}
-	public void setFrom(String from) {
+	public void setFrom(int from) {
 		this.from = from;
 	}
-	public String getTo() {
+	public int getTo() {
 		return to;
 	}
-	public void setTo(String to) {
+	public void setTo(int to) {
 		this.to = to;
 	}
-	public String getDate() {
+	public java.util.Date getDate() {
 		return date;
 	}
-	public void setDate(String date) {
+	public void setDate(java.util.Date date) {
 		this.date = date;
 	}
 	public String getText() {

@@ -1,9 +1,6 @@
 package model;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 
-@XmlAccessorType(XmlAccessType.FIELD)
 public class Role {
 	
 	private int id;
@@ -23,10 +20,6 @@ public class Role {
 	}
 	
 	public Role() {}
-	public Role(int id, String name) {
-		this.id = id;
-		this.roleName=name;
-	}
 	
 	@Override	
 	public String toString() {
