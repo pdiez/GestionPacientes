@@ -1,21 +1,32 @@
 package model;
 
+import util.Persistent;
+
 public class Sensor {
 	
-	private String id;
+	private int id;
 	private String sensorType;
-	private int currentValue;
+	private int sensorTypeId;
 	private int alertValue;
-	private int maxValue;
-	private int minValue;
 	private int userId;
+	private int active;
+	private int currentValue;
+	private int maxValue;
 
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setId(int i) {
+		this.id = i;
+	}
+	
+	public int getSensorTypeId() {
+		return sensorTypeId;
+	}
+
+	public void setSensorTypeId(int sensorTypeId) {
+		this.sensorTypeId = sensorTypeId;
 	}
 
 	public String getSensorType() {
@@ -26,20 +37,43 @@ public class Sensor {
 		this.sensorType = sensorType;
 	}
 
-	public int getCurrentValue() {
-		return currentValue;
-	}
-
-	public void setCurrentValue(int currentValue) {
-		this.currentValue = currentValue;
-	}
-
+	
 	public int getAlertValue() {
 		return alertValue;
 	}
 
 	public void setAlertValue(int alertValue) {
 		this.alertValue = alertValue;
+	}
+
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+	
+	
+
+	public int getActive() {
+		return active;
+	}
+
+	public void setActive(int active) {
+		this.active = active;
+	}
+
+	public Sensor() {}
+	
+	
+	
+	public int getCurrentValue() {
+		return currentValue;
+	}
+
+	public void setCurrentValue(int currentValue) {
+		this.currentValue = currentValue;
 	}
 
 	public int getMaxValue() {
@@ -50,27 +84,14 @@ public class Sensor {
 		this.maxValue = maxValue;
 	}
 
-	public int getMinValue() {
-		return minValue;
-	}
-
-	public void setMinValue(int minValue) {
-		this.minValue = minValue;
-	}
-
-	public int getUserId() {
-		return userId;
-	}
-
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
-
-	public Sensor() {}
-	
 	@Override	
 	public String toString() {
-		return this.id;
+		return this.sensorType + " nº " + this.id;
+	}
+
+	public void actualizarDatos() {
+		this.currentValue = Persistent.getSensorLastValue(this);
+		this.maxValue = Persistent.getSensorMaxValue(this);
 	}
 	
 }

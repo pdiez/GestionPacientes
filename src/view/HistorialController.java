@@ -23,7 +23,7 @@ import util.Persistent;
 
 public class HistorialController implements Initializable {
 	
-	ObservableList<User> pacientes = FXCollections.observableArrayList(Persistent.getUserByRoleId(3));
+	ObservableList<User> pacientes = FXCollections.observableArrayList(Persistent.getUserByRoleId(1));
 	
 	@FXML
 	JFXComboBox cboPaciente;
@@ -90,10 +90,9 @@ public class HistorialController implements Initializable {
 	private void updateTablaSensoress(User u) {
 
 		ObservableList<Sensor> data = FXCollections.observableArrayList();
-		data.addAll(new Sensor());//Persistent.getSensors().getSensorbyUser(u.getUsername()));
+		data.addAll(Persistent.getSensorbyUser(u));
 		for (Sensor s : data) {
-			String cv = CSVUtil.leerCSVbySensor(s.getId());
-			if (!cv.isEmpty()) s.setCurrentValue(Integer.parseInt(cv));
+			s.actualizarDatos();
 			
 		}
 		tblHistorial.setItems(data);

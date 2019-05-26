@@ -9,12 +9,15 @@ import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+
 import javax.sql.rowset.CachedRowSet;
 
 import com.sun.rowset.CachedRowSetImpl;
 
 import model.Message;
 import model.Role;
+import model.Sensor;
 import model.User;
 
 public class Persistent {
@@ -49,6 +52,7 @@ public class Persistent {
 			Connection con=DriverManager.getConnection(constring, dbuser, dbpass);  
 			Statement stmt=con.createStatement();  
 			stmt.executeUpdate(q); 
+			//System.out.println(q);
 			con.close();  
 		} catch (ClassNotFoundException e) {
 		    System.out.println("JDBC no encontrado");
@@ -166,7 +170,7 @@ public class Persistent {
 			rs=stmt.executeQuery(); 
 			while(rs.next()) {
 				res = true;
-				System.out.println(rs.getInt(1));
+				//System.out.println(rs.getInt(1));
 			}
 			con.close();  
 		} catch (ClassNotFoundException e) {
@@ -299,4 +303,136 @@ public class Persistent {
 		return rl;
 	}
 	
+	
+	public static void saveSensorData (String tipo, int id, int data) {
+		Date d = new Date();
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		String dateformat = dateFormat.format(d);
+		String q = "";
+		switch(tipo) {
+		case "T": 
+			q = "INSERT INTO SENSORTDATA (SENSOR_ID, DATE, TEMP) VALUES ("
+					+ id + ", '" + dateformat +"', " + data + ");";
+			break;
+		case "M":
+			q = "INSERT INTO SENSORMDATA (SENSOR_ID, DATE, STATE) VALUES ("
+					+ id + ", '" + dateformat +"', " + data + ");";
+			break;
+		case "H":
+			q = "INSERT INTO SENSORHDATA (SENSOR_ID, DATE, HUMID) VALUES ("
+					+ id + ", '" + dateformat +"', " + data + ");";
+			break;
+		default:
+			q = "";
+		}
+		if (q!="") {
+			Execute(q);
+		}
+	}
+	
+	public static ArrayList<Sensor> getSensorList() {
+		ArrayList<Sensor> sl = new ArrayList<Sensor>();
+		String q  = "SELECT a.id, a.user_id, a.sensortype_id, b.type sensortype, a.alertvalue, a.active FROM SENSOR A, SENSORTYPE B WHERE A.SENSORTYPE_ID = B.ID;";
+		ResultSet rs = Query(q);
+		try {
+			while(rs.next()) {
+				Sensor s = new Sensor();
+				s.setId(rs.getInt(1));
+				s.setUserId(rs.getInt(2));
+				s.setSensorTypeId(rs.getInt(3));
+				s.setSensorType(rs.getString(4));
+				s.setAlertValue(rs.getInt(5));
+				s.setActive(rs.getInt(6));
+				sl.add(s);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return sl;
+	}
+	
+	public static int getSensorLastValue(Sensor s) {
+		int i = 0;
+		String q = "";
+		switch(s.getSensorTypeId()) {
+		case 1: 
+			q = "SELECT temp FROM SENSORTDATA WHERE sensor_id = "+ s.getId() + " ORDER BY DATE DESC LIMIT 1;";
+			break;
+		case 2:
+			q = "SELECT state FROM SENSORMDATA WHERE sensor_id = "+ s.getId() + " ORDER BY DATE DESC LIMIT 1;";
+			break;
+		case 3:
+			q = "SELECT humid FROM SENSORHDATA WHERE sensor_id = "+ s.getId() + " ORDER BY DATE DESC LIMIT 1;";
+			break;
+		default:
+			q = "";
+		}
+		if (q!="") {
+			ResultSet rs = Query(q);
+			try {
+				while(rs.next()) {
+					i = rs.getInt(1);
+					//System.out.println("leido " + i);
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return i;
+	}
+	
+	public static int getSensorMaxValue(Sensor s) {
+		int i = 0;
+		String q = "";
+		switch(s.getSensorTypeId()) {
+		case 1: 
+			q = "SELECT MAX(temp) FROM SENSORTDATA WHERE sensor_id = "+ s.getId() + ";";
+			break;
+		case 2:
+			q = "SELECT MAX(state) FROM SENSORMDATA WHERE sensor_id = "+ s.getId() + ";";
+			break;
+		case 3:
+			q = "SELECT MAX(humid) FROM SENSORHDATA WHERE sensor_id = "+ s.getId() + ";";
+			break;
+		default:
+			q = "";
+		}
+		if (q!="") {
+			ResultSet rs = Query(q);
+			try {
+				while(rs.next()) {
+					i = rs.getInt(1);
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return i;
+	}
+
+	public static ArrayList<Sensor> getSensorbyUser(User u) {
+		ArrayList<Sensor> sl = new ArrayList<Sensor>();
+		String q  = "SELECT a.id, a.user_id, a.sensortype_id, b.type sensortype, a.alertvalue, a.active FROM SENSOR A, SENSORTYPE B "
+				+ "WHERE A.SENSORTYPE_ID = B.ID AND A.USER_ID = "+ u.getId() +";";
+		ResultSet rs = Query(q);
+		try {
+			while(rs.next()) {
+				Sensor s = new Sensor();
+				s.setId(rs.getInt(1));
+				s.setUserId(rs.getInt(2));
+				s.setSensorTypeId(rs.getInt(3));
+				s.setSensorType(rs.getString(4));
+				s.setAlertValue(rs.getInt(5));
+				s.setActive(rs.getInt(6));
+				sl.add(s);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return sl;
+	}
 }

@@ -44,11 +44,10 @@ public class AlertasController implements Initializable {
 	
 	private void pintaAlertas() {
 		lstAlertas.getItems().clear();
-		//List<Sensor> sensores = Persistent.getSensors().getSensorList();
-		List<Sensor> sensores = null;
+		List<Sensor> sensores = Persistent.getSensorList();
 		for (Sensor s : sensores) {
-			String cv = CSVUtil.leerCSVbySensor(s.getId());
-			if (!cv.isEmpty()) s.setCurrentValue(Integer.parseInt(cv));
+			s.actualizarDatos();
+			System.out.println(s.getId() + s.getSensorType() + s.getCurrentValue());
 			if (s.getCurrentValue() >= s.getAlertValue()) {
 				addAlerta(s);
 			}

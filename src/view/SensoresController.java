@@ -46,12 +46,11 @@ public class SensoresController implements Initializable {
         tblSensores.getColumns().addAll(c1, c2, c3, c4 ,c5);
         
         ObservableList<Sensor> data = FXCollections.observableArrayList();
-        ArrayList<Sensor> sensores = null; //Persistent.getSensors();
+        ArrayList<Sensor> sensores = Persistent.getSensorList();
         if(!sensores.isEmpty()) {
 			data.addAll(sensores);
 			for (Sensor s : data) {
-				String cv = CSVUtil.leerCSVbySensor(s.getId());
-				if (!cv.isEmpty()) s.setCurrentValue(Integer.parseInt(cv));
+				s.actualizarDatos();
 				
 			}
 			

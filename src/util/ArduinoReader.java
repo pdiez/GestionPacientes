@@ -9,19 +9,12 @@ import jssc.SerialPortEvent;
 import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
 
-public class ArduinoReader {
-
+public class ArduinoReader extends Thread {
+	
 	//Se crea una instancia de la librería PanamaHitek_Arduino
     private static PanamaHitek_Arduino ino = new PanamaHitek_Arduino();
-    public double valor= 2;
     public String salida ="";
-    
-    public double get_valor() {
-    	
-		return valor;
-    	
-    }
-    
+      
     private static final SerialPortEventListener listener = new SerialPortEventListener() {
     	public String salida;
     	@Override
@@ -31,10 +24,10 @@ public class ArduinoReader {
                     //Se imprime el mensaje recibido en la consola
                     //System.out.println("la temperatura es: " + ino.printMessage());
                     salida = ino.printMessage();
-                    System.out.println(salida);
-                    
+                    //System.out.println(salida);
+                    parseReading(salida);
                    
-                                    }
+                }
             } catch (SerialPortException | ArduinoException ex) {
                 Logger.getLogger(ArduinoReader.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -43,11 +36,18 @@ public class ArduinoReader {
     };
 
     	   		
-    public String get_temperatura() {
-    	return salida;
+    private static void parseReading(String s) {
+    	 String[] data = s.split("#");
+         if (data.length==3) {
+             String tipo = data[0]; 
+             int sensorId = Integer.parseInt(data[1]);
+             int out = Integer.parseInt(data[2]);
+             Persistent.saveSensorData(tipo, sensorId, out);
+         }
+    	
     }
     
-    public static  void main(String[] args) {
+    public void run() {
         try {
             ino.arduinoRX("COM3", 9600, listener);
         } catch (ArduinoException | SerialPortException ex) {

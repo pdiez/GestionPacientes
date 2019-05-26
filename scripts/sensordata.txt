@@ -1,0 +1,24 @@
+/* tabla para guardar lo recibido por los sensores de temperatura */
+create table sensorTdata (
+id mediumint not null AUTO_INCREMENT,
+sensor_id mediumint,
+date datetime,
+temp mediumint,
+PRIMARY KEY (id));
+
+/* tabla para guardar lo recibido por los sensores de humedad */
+create table sensorHdata (
+id mediumint not null AUTO_INCREMENT,
+sensor_id mediumint,
+date datetime,
+humid mediumint,
+PRIMARY KEY (id));
+
+/* tabla para guardar lo recibido por los sensores de movimiento */
+create table sensorMdata (
+id mediumint not null AUTO_INCREMENT,
+sensor_id mediumint,
+date datetime,
+state mediumint,
+PRIMARY KEY (id));
+
