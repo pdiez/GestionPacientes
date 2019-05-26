@@ -9,7 +9,7 @@ import jssc.SerialPortEvent;
 import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
 
-public class arduinoReader {
+public class ArduinoReader {
 
 	//Se crea una instancia de la librería PanamaHitek_Arduino
     private static PanamaHitek_Arduino ino = new PanamaHitek_Arduino();
@@ -36,7 +36,7 @@ public class arduinoReader {
                    
                                     }
             } catch (SerialPortException | ArduinoException ex) {
-                Logger.getLogger(arduinoReader.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ArduinoReader.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         }
@@ -51,7 +51,7 @@ public class arduinoReader {
         try {
             ino.arduinoRX("COM3", 9600, listener);
         } catch (ArduinoException | SerialPortException ex) {
-            Logger.getLogger(arduinoReader.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ArduinoReader.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 	
