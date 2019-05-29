@@ -22,7 +22,7 @@ import model.User;
 
 public class Persistent {
 	
-	private static final String constring = "jdbc:mysql://localhost:3306/gestionpacientes";
+	private static final String constring = "jdbc:mysql://localhost:3306/gestionpacientes?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
 	private static final String dbuser = "root";
 	private static final String dbpass = "secreto";
 	
