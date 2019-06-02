@@ -114,6 +114,7 @@ public class AdminController implements Initializable{
         
         TableColumn c5 = new TableColumn("Eliminar");
         c5.setCellValueFactory(new PropertyValueFactory<>("DEL"));
+        c5.getStyleClass().add("centrado");
         
         Callback<TableColumn<User, String>, TableCell<User, String>> cellFactory
         = //

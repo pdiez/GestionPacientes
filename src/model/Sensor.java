@@ -91,7 +91,27 @@ public class Sensor {
 
 	public void actualizarDatos() {
 		this.currentValue = Persistent.getSensorLastValue(this);
-		this.maxValue = Persistent.getSensorMaxValue(this);
+		this.maxValue = Persistent.getSensorMaxValueTPA(this);
+	}
+
+	public void cambiarEstado() {
+		this.active = this.active == 1 ? 0 : 1;
+		this.update();
+		
+	}
+
+	private void update() {
+		Persistent.updateSensor(this);		
+	}
+
+	public void Guardar() {
+		Persistent.saveSensor(this);
+		
+	}
+
+	public void Borrar() {
+		
+		Persistent.deleteSensor(this);
 	}
 	
 }

@@ -15,9 +15,11 @@ import javax.sql.rowset.CachedRowSet;
 
 import com.sun.rowset.CachedRowSetImpl;
 
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import model.Message;
 import model.Role;
 import model.Sensor;
+import model.SensorType;
 import model.User;
 
 public class Persistent {
@@ -413,6 +415,40 @@ public class Persistent {
 		return i;
 	}
 
+	public static int getSensorMaxValueTPA(Sensor s) {
+		ArrayList<Integer> i = new ArrayList<Integer>();
+		String q = "";
+		switch(s.getSensorTypeId()) {
+		case 1: 
+			q = "SELECT temp FROM SENSORTDATA WHERE sensor_id = "+ s.getId() + ";";
+			break;
+		case 2:
+			q = "SELECT state FROM SENSORMDATA WHERE sensor_id = "+ s.getId() + ";";
+			break;
+		case 3:
+			q = "SELECT humid FROM SENSORHDATA WHERE sensor_id = "+ s.getId() + ";";
+			break;
+		default:
+			q = "";
+		}
+		if (q!="") {
+			ResultSet rs = Query(q);
+			try {
+				while(rs.next()) {
+					i.add(rs.getInt(1));
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		HeapSort h = new HeapSort();
+		h.sort(i);
+		
+		return i.get(i.size()-1);
+	}
+	
 	public static ArrayList<Sensor> getSensorbyUser(User u) {
 		ArrayList<Sensor> sl = new ArrayList<Sensor>();
 		String q  = "SELECT a.id, a.user_id, a.sensortype_id, b.type sensortype, a.alertvalue, a.active FROM SENSOR A, SENSORTYPE B "
@@ -435,4 +471,62 @@ public class Persistent {
 		}
 		return sl;
 	}
+
+	public static void updateSensor(Sensor sensor) {
+		String q = "UPDATE SENSOR SET active = " + sensor.getActive() + ", user_id = " + sensor.getUserId() + ", sensortype_id = " + sensor.getSensorTypeId() 
+		+ ", alertvalue = "+ sensor.getAlertValue() +" where id = " + sensor.getId() +";";
+		
+		Execute(q);
+	}
+	
+	public static ArrayList<SensorType> getSensorTypeList() {
+		ArrayList<SensorType> st = new ArrayList<SensorType>();
+		String q  = "SELECT id,type FROM SENSORTYPE;";
+		ResultSet rs = Query(q);
+		try {
+			while(rs.next()) {
+				SensorType s = new SensorType();
+				s.setId(rs.getInt(1));
+				s.setType(rs.getString(2));
+				st.add(s);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return st;
+	}
+
+	public static void saveSensor(Sensor sensor) {
+		String q = "INSERT INTO SENSOR (id,user_id, sensortype_id, alertvalue, active) VALUES ("
+				+ sensor.getId() + ", "+ sensor.getUserId() + ", " + sensor.getSensorTypeId() + ", " + sensor.getAlertValue() + ", " + sensor.getActive() + ");";
+
+		
+		Execute(q);
+		
+	}
+
+	public static void deleteSensor(Sensor sensor) {
+		String q1,q2;
+		switch(sensor.getSensorTypeId()) {
+		case 1: 
+			q2 = "DELETE FROM SENSORTDATA WHERE sensor_id = "+ sensor.getId() + ";";
+			break;
+		case 2:
+			q2 = "DELETE FROM SENSORMDATA WHERE sensor_id = "+ sensor.getId() + ";";
+			break;
+		case 3:
+			q2 = "DELETE FROM SENSORHDATA WHERE sensor_id = "+ sensor.getId() + ";";
+			break;
+		default:
+			q2 = "";
+		}
+		q1 = "DELETE FROM SENSOR where id = " + sensor.getId() +";";
+		if (q2!="") {
+			Execute(q1);
+			Execute(q2);
+		}
+	}
+	
+	
 }

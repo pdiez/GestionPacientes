@@ -44,3 +44,6 @@
 }
 
 
+.table-cell.centrado {
+    -fx-alignment: center;
+}
