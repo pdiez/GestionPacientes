@@ -527,6 +527,37 @@ public class Persistent {
 			Execute(q2);
 		}
 	}
+
+	public static ArrayList<Integer> getLastTemps(Sensor sensor, int i) {
+		ArrayList<Integer> il = new ArrayList<Integer>();
+		String q="";
+		switch(sensor.getSensorTypeId()) {
+		case 1: 
+			q = "SELECT temp FROM SENSORTDATA WHERE sensor_id = "+ sensor.getId() + " ORDER BY DATE DESC LIMIT "+ i + ";";
+			break;
+		case 2:
+			q = "SELECT state FROM SENSORMDATA WHERE sensor_id = "+ sensor.getId() + " ORDER BY DATE DESC LIMIT "+ i + ";";
+			break;
+		case 3:
+			q = "SELECT humid FROM SENSORHDATA WHERE sensor_id = "+ sensor.getId() +  " ORDER BY DATE DESC LIMIT "+ i + ";";
+			break;
+		default:
+			q = "";
+		}
+		
+		if (q!="") {
+			ResultSet rs = Query(q);
+			try {
+				while(rs.next()) {
+					il.add(rs.getInt(1));
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return il;
+	}
 	
 	
 }

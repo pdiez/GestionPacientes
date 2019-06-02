@@ -1,5 +1,7 @@
 package model;
 
+import java.util.ArrayList;
+
 import util.Persistent;
 
 public class Sensor {
@@ -112,6 +114,10 @@ public class Sensor {
 	public void Borrar() {
 		
 		Persistent.deleteSensor(this);
+	}
+
+	public ArrayList<Integer> getLastTemps(int i) {
+		return Persistent.getLastTemps(this,i);
 	}
 	
 }

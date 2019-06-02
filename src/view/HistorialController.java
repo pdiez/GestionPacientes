@@ -2,6 +2,7 @@ package view;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXComboBox;
@@ -12,9 +13,13 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.util.StringConverter;
 import model.Sensor;
 import model.User;
@@ -24,6 +29,8 @@ import util.Persistent;
 public class HistorialController implements Initializable {
 	
 	ObservableList<User> pacientes = FXCollections.observableArrayList(Persistent.getUserByRoleId(1));
+	@FXML
+	LineChart chrTemps; 
 	
 	@FXML
 	JFXComboBox cboPaciente;
@@ -84,6 +91,7 @@ public class HistorialController implements Initializable {
         c4.setCellValueFactory(new PropertyValueFactory<Sensor,Integer>("currentValue"));
        
         tblHistorial.getColumns().addAll(c1, c2, c3, c4);
+        
 		
 	}
 	
@@ -96,7 +104,25 @@ public class HistorialController implements Initializable {
 			
 		}
 		tblHistorial.setItems(data);
-		
+	}
+	
+	@FXML
+    private void handletblAction(MouseEvent event) throws IOException {
+		if(tblHistorial.getItems().size()>0) {
+			
+			Sensor s = (Sensor) tblHistorial.getSelectionModel().getSelectedItem();
+			XYChart.Series series = new XYChart.Series(); 
+			
+			int n = 0;
+			for (Integer i : s.getLastTemps(50)) {
+				series.getData().add(new XYChart.Data("nº"+n, i));
+				n++;
+			}
+			chrTemps.getData().clear();
+			chrTemps.getData().add(series);
+			
+		}
+
 	}
 
 }
