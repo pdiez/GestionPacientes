@@ -90,7 +90,7 @@ public class SensoresController implements Initializable {
 		
 		cboUsuarioSensor.setItems(users);
 		IntegerValidator iv = new IntegerValidator();
-		iv.setMessage("Num");
+		iv.setMessage("Numerico");
 		txtSensorId.getValidators().add(iv);
 		txtSensorId.setOnKeyReleased(e ->
 	    {
