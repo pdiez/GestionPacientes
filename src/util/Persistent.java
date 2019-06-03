@@ -334,17 +334,18 @@ public class Persistent {
 	
 	public static ArrayList<Sensor> getSensorList() {
 		ArrayList<Sensor> sl = new ArrayList<Sensor>();
-		String q  = "SELECT a.id, a.user_id, a.sensortype_id, b.type sensortype, a.alertvalue, a.active FROM SENSOR A, SENSORTYPE B WHERE A.SENSORTYPE_ID = B.ID;";
+		String q  = "SELECT a.id, a.user_id,c.name user, a.sensortype_id, b.type sensortype, a.alertvalue, a.active FROM SENSOR A, SENSORTYPE B, USER C WHERE (A.SENSORTYPE_ID = B.ID) AND ( A.USER_ID = C.ID);";
 		ResultSet rs = Query(q);
 		try {
 			while(rs.next()) {
 				Sensor s = new Sensor();
 				s.setId(rs.getInt(1));
 				s.setUserId(rs.getInt(2));
-				s.setSensorTypeId(rs.getInt(3));
-				s.setSensorType(rs.getString(4));
-				s.setAlertValue(rs.getInt(5));
-				s.setActive(rs.getInt(6));
+				s.setUserName(rs.getString(3));
+				s.setSensorTypeId(rs.getInt(4));
+				s.setSensorType(rs.getString(5));
+				s.setAlertValue(rs.getInt(6));
+				s.setActive(rs.getInt(7));
 				sl.add(s);
 			}
 		} catch (SQLException e) {

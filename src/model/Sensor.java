@@ -14,7 +14,8 @@ public class Sensor {
 	private int active;
 	private int currentValue;
 	private int maxValue;
-
+	private String userName;
+	
 	public int getId() {
 		return id;
 	}
@@ -70,6 +71,14 @@ public class Sensor {
 	
 	
 	
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
 	public int getCurrentValue() {
 		return currentValue;
 	}

@@ -116,7 +116,7 @@ public class SensoresController implements Initializable {
 		c1.getStyleClass().add("centrado");
 		
         TableColumn c2 = new TableColumn("Usuario");
-        c2.setCellValueFactory(new PropertyValueFactory<Sensor,String>("user"));
+        c2.setCellValueFactory(new PropertyValueFactory<Sensor,String>("userName"));
         c2.prefWidthProperty().set(200.0);
         
     	TableColumn c3 = new TableColumn("Tipo");
