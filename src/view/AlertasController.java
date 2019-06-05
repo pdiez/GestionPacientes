@@ -44,7 +44,7 @@ public class AlertasController implements Initializable {
 	
 	private void pintaAlertas() {
 		lstAlertas.getItems().clear();
-		List<Sensor> sensores = Persistent.getSensorList();
+		List<Sensor> sensores = Persistent.getSensorList(true);
 		for (Sensor s : sensores) {
 			s.actualizarDatos();
 			System.out.println(s.getId() + s.getSensorType() + s.getCurrentValue());

@@ -332,9 +332,12 @@ public class Persistent {
 		}
 	}
 	
-	public static ArrayList<Sensor> getSensorList() {
+	public static ArrayList<Sensor> getSensorList(boolean active) {
 		ArrayList<Sensor> sl = new ArrayList<Sensor>();
-		String q  = "SELECT a.id, a.user_id,c.name user, a.sensortype_id, b.type sensortype, a.alertvalue, a.active FROM SENSOR A, SENSORTYPE B, USER C WHERE (A.SENSORTYPE_ID = B.ID) AND ( A.USER_ID = C.ID);";
+		String q  = "SELECT a.id, a.user_id,c.name user, a.sensortype_id, b.type sensortype, a.alertvalue, a.active " 
+				+ "FROM SENSOR A, SENSORTYPE B, USER C WHERE (A.SENSORTYPE_ID = B.ID) AND ( A.USER_ID = C.ID)";
+		if (active) { q += " AND a.active = 1"; }
+	    q += ";";
 		ResultSet rs = Query(q);
 		try {
 			while(rs.next()) {
@@ -354,6 +357,8 @@ public class Persistent {
 		}
 		return sl;
 	}
+	
+	
 	
 	public static int getSensorLastValue(Sensor s) {
 		int i = 0;

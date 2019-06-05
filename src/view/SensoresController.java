@@ -1,6 +1,5 @@
 package view;
 
-import java.awt.List;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -10,8 +9,6 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.validation.IntegerValidator;
-import com.sun.javafx.font.Glyph;
-
 import de.jensd.fx.glyphs.GlyphIcon;
 import de.jensd.fx.glyphs.GlyphsBuilder;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
@@ -28,11 +25,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
-import model.Role;
 import model.Sensor;
 import model.SensorType;
 import model.User;
-import util.CSVUtil;
 import util.Persistent;
 
 public class SensoresController implements Initializable {
@@ -236,7 +231,7 @@ public class SensoresController implements Initializable {
 	private void updateTablaSensores() {
 
 		ObservableList<Sensor> data = FXCollections.observableArrayList();
-        ArrayList<Sensor> sensores = Persistent.getSensorList();
+        ArrayList<Sensor> sensores = Persistent.getSensorList(false);
         if(!sensores.isEmpty()) {
 			data.addAll(sensores);
 			for (Sensor s : data) {
