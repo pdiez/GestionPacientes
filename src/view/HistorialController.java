@@ -28,7 +28,7 @@ import util.Persistent;
 
 public class HistorialController implements Initializable {
 	
-	ObservableList<User> pacientes = FXCollections.observableArrayList(Persistent.getUserByRoleId(1));
+	ObservableList<User> pacientes = FXCollections.observableArrayList(Persistent.getUsersByRoleId(1));
 	@FXML
 	LineChart chrTemps; 
 	

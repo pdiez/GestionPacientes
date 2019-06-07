@@ -110,12 +110,13 @@ public class Persistent {
 		return u;
 	}
 	
-	public static User getUserByRoleId (int i) {
-		User u = new User();
+	public static ArrayList<User> getUsersByRoleId (int i) {
+		ArrayList<User> ul = new ArrayList<User>();
 		String q = "SELECT id,user,password,name, role_id, phone, notes FROM USER WHERE role_id = " + i +";";
 		ResultSet rs = Query(q);
 		try {
 			while(rs.next()) {
+				User u = new User();
 				u.setId(rs.getInt(1));
 				u.setUsername(rs.getString(2));
 				u.setPassword(rs.getString(3));
@@ -123,13 +124,13 @@ public class Persistent {
 				u.setRole(rs.getInt(5));
 				u.setPhone(rs.getString(6));
 				u.setNotes(rs.getString(7));
-				
+				ul.add(u);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return u;
+		return ul;
 	}
 	
 	

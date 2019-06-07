@@ -47,7 +47,7 @@ public class AlertasController implements Initializable {
 		List<Sensor> sensores = Persistent.getSensorList(true);
 		for (Sensor s : sensores) {
 			s.actualizarDatos();
-			System.out.println(s.getId() + s.getSensorType() + s.getCurrentValue());
+			//System.out.println(s.getId() + s.getSensorType() + s.getCurrentValue());
 			if (s.getCurrentValue() >= s.getAlertValue()) {
 				addAlerta(s);
 			}

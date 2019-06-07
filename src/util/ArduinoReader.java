@@ -49,7 +49,7 @@ public class ArduinoReader extends Thread {
     
     public void run() {
         try {
-            ino.arduinoRX("COM3", 9600, listener);
+            ino.arduinoRX("COM8", 9600, listener);
         } catch (ArduinoException | SerialPortException ex) {
             Logger.getLogger(ArduinoReader.class.getName()).log(Level.SEVERE, null, ex);
         }

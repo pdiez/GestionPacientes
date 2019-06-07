@@ -27,7 +27,7 @@ const int PIR = 7;  // pin 7 donde  va a la seÃƒÂ±al del sensor de movimient
 const int LED = 13;
 int pir_lectura = 0;
 
-SimpleDHT22 dht11(pinDHT11); //OJO AQUI K ES DONDE MODIFIQUE PARA MI SENSOR DE H/T
+SimpleDHT11 dht11(pinDHT11); //OJO AQUI K ES DONDE MODIFIQUE PARA MI SENSOR DE H/T
 
 void setup() {
   Serial.begin(9600); // Configurar el puerto serie a 9600 para monitorizar
