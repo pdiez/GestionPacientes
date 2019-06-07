@@ -5,9 +5,13 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextArea;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -20,6 +24,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.util.Duration;
 import javafx.util.StringConverter;
 import model.Sensor;
 import model.User;
@@ -27,8 +32,10 @@ import util.CSVUtil;
 import util.Persistent;
 
 public class HistorialController implements Initializable {
+	private User user;
+	 
+	ObservableList<User> pacientes;
 	
-	ObservableList<User> pacientes = FXCollections.observableArrayList(Persistent.getUsersByRoleId(1));
 	@FXML
 	LineChart chrTemps; 
 	
@@ -41,9 +48,25 @@ public class HistorialController implements Initializable {
 	@FXML
 	TableView tblHistorial;
 	
+	@FXML
+	JFXButton btnUpdateSensor;
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		if (this.user.getRole()==1) {
+			pacientes = FXCollections.observableArrayList(this.user);
+		}
+		else {
+			pacientes = FXCollections.observableArrayList(Persistent.getUsersByRoleId(1));
+		}
 		cboPaciente.setConverter(new StringConverter<User>() {
 		    @Override
 		    public String toString(User object) {
@@ -57,8 +80,8 @@ public class HistorialController implements Initializable {
 		});
 		
 		
-		
 		cboPaciente.setItems(pacientes);
+		
 		
 		cargaSensores();
 		
@@ -71,6 +94,18 @@ public class HistorialController implements Initializable {
 		txtNotas.setText(u.getNotes());
 		
 		updateTablaSensoress(u);
+		
+		
+	}
+	
+	@FXML
+    private void handlebtnUpdateSensorAction(ActionEvent event) throws IOException {
+		if (cboPaciente.getSelectionModel().getSelectedIndex()!=-1) {
+			User u = (User) cboPaciente.getSelectionModel().getSelectedItem();
+			txtNotas.setText(u.getNotes());
+			
+			updateTablaSensoress(u);
+		}
 		
 		
 	}

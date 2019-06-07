@@ -13,6 +13,6 @@
       <JFXComboBox fx:id="cboTipoSensor" layoutX="38.0" layoutY="369.0" prefHeight="25.0" prefWidth="166.0" promptText="Tipo de sensor" />
       <JFXComboBox fx:id="cboUsuarioSensor" layoutX="304.0" layoutY="369.0" prefHeight="25.0" prefWidth="200.0" promptText="Usuario asociado" />
       <JFXTextField fx:id="txtAlerta" layoutX="523.0" layoutY="369.0" prefHeight="25.0" prefWidth="50.0" promptText="MAX" />
-      <JFXButton fx:id="btnAddSensor" layoutX="588.0" layoutY="369.0" onAction="#handlebtnAddSensorAction" prefHeight="25.0" prefWidth="102.0" text="Añadir" />
+       
    </children>
 </AnchorPane>

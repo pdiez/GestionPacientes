@@ -141,9 +141,10 @@ public class MainController implements Initializable {
 	    if (user.getRole()>=1) {
 	    	btnMensajes.setDisable(false);
 	    	btnPerfil.setDisable(false);
+	    	btnHistorial.setDisable(false);
 	    }
 	    if (user.getRole()>=2) {
-	    	btnHistorial.setDisable(false);
+	    	
 	    	btnAlertas.setDisable(false);
 	    	btnSensores.setDisable(false);
 	    }
@@ -180,9 +181,16 @@ public class MainController implements Initializable {
 	
 	@FXML
     private void handlebtnHistorialAction(ActionEvent event) throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource(HISTORIALFXML));
+		FXMLLoader loader = new FXMLLoader();
+		
+		HistorialController controller = new HistorialController();
+	    controller.setUser(user);
+	    loader.setController(controller);
+	    loader.setLocation(getClass().getResource(HISTORIALFXML));
+	    Parent root = loader.load();
 		contentPane.getChildren().remove(0);
 		contentPane.getChildren().add(root);
+		
 		Animate.animateAnchorPane(contentPane);
 		bordeActivo(btnHistorial);
 		
